@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gudang Game Offline</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Roboto:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Reset dasar & gaya body */
+        body {
+            background-color: #121212;
+            color: #ffffff;
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        /* Judul utama */
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 2.5rem;
+            color: #00ff99;
+            text-shadow: 3px 3px 0px #ff0055;
+        }
+
+        /* Kontainer utama untuk grid game */
+        .game-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            /* Jarak vertikal (row) lebih besar untuk memberi ruang bagi judul */
+            gap: 30px 15px; 
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        /* Kontainer untuk setiap item (gambar + judul) */
+        .grid-item {
+            text-align: center;
+            cursor: pointer;
+        }
+
+        /* Styling untuk setiap kotak game (sekarang hanya untuk gambar) */
+        .game-card {
+            aspect-ratio: 1 / 1;
+            background-color: #2a2a2a;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            border: 2px solid #444;
+            margin-bottom: 10px; /* Jarak antara gambar dan judul di bawahnya */
+        }
+        
+        /* Efek saat kursor di atas item */
+        .grid-item:hover .game-card {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px #00ff99;
+            z-index: 10;
+        }
+        
+        /* Gambar placeholder di dalam kartu */
+        .game-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        /* Overlay teks "Coming Soon" */
+        .game-card .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: bold;
+            opacity: 0;
+            transition: opacity 0.2s ease-in-out;
+            pointer-events: none;
+        }
+        
+        /* Munculkan overlay saat kursor di atas item */
+        .grid-item:hover .overlay {
+            opacity: 1;
+        }
+
+        /* Styling untuk judul game */
+        .game-title {
+            font-size: 0.9rem;
+            font-weight: bold;
+            color: #cccccc;
+            margin: 0;
+            /* Cegah teks jadi 2 baris jika terlalu panjang */
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            transition: color 0.2s ease-in-out;
+        }
+
+        .grid-item:hover .game-title {
+            color: #00ff99; /* Ganti warna judul saat di-hover */
+        }
+        
+        /* Responsif untuk layar lebih kecil */
+        @media (max-width: 600px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            .game-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            }
+        }
+    </style>
+    </head>
+<body>
+
+    <div class="header">
+        <h1>GUDANG GAME</h1>
+    </div>
+    
+    <div class="game-grid" id="gameGrid">
+        </div>
+
+
+    <script>
+        // Ambil elemen kontainer grid dari HTML
+        const gameGrid = document.getElementById('gameGrid');
+
+        // Jumlah game yang mau ditampilkan
+        const totalGames = 20; // Ubah angka ini sesuai keinginan lo
+
+        // Looping untuk membuat setiap item game
+        for (let i = 1; i <= totalGames; i++) {
+            // 1. Buat kontainer utama untuk satu item (gambar + judul)
+            const gridItem = document.createElement('div');
+            gridItem.className = 'grid-item';
+
+            // 2. Buat elemen div untuk kartu game (gambar)
+            const card = document.createElement('div');
+            card.className = 'game-card'; 
+
+            // 3. Buat elemen gambar placeholder
+            const img = document.createElement('img');
+            const overlay = document.createElement('div');
+            overlay.className = 'overlay';
+
+            // 4. Buat elemen paragraf untuk judul game
+            const title = document.createElement('p');
+            title.className = 'game-title';
+
+            // =========================================================================
+            // INI BAGIAN YANG DIUPDATE
+            // Logika untuk membedakan game yang sudah ada dan yang belum
+            // =========================================================================
+            if (i === 1) {
+                // --- PENGATURAN UNTUK GAME TETRIS ---
+                title.textContent = 'Tetris';
+                // Ganti gambar placeholder dengan thumbnail asli (jika ada)
+                // Untuk sekarang kita tetap pakai placeholder tapi dengan teks berbeda
+                img.src = `https://placehold.co/200x200/000000/00ff99?text=TETRIS&font=press-start-2p`;
+                overlay.textContent = 'Mainkan!';
+
+                // Link ke file game Tetris di dalam foldernya
+                gridItem.addEventListener('click', () => {
+                    window.location.href = 'Tetris/tetris.html';
+                });
+
+            } else {
+                // --- PENGATURAN UNTUK GAME LAINNYA (COMING SOON) ---
+                title.textContent = `Game Slot #${i}`; // Judul placeholder
+                img.src = `https://placehold.co/200x200/2a2a2a/ffffff?text=Coming+Soon&font=roboto&seed=${i}`;
+                overlay.textContent = 'Coming Soon';
+
+                // Aksi saat di-klik hanya menampilkan alert
+                gridItem.addEventListener('click', () => {
+                    alert('Game ini belum tersedia, bro! Sabar ya!');
+                });
+            }
+            // =========================================================================
+
+            // 5. Gabungkan semuanya:
+            card.appendChild(img);
+            card.appendChild(overlay);
+            gridItem.appendChild(card);
+            gridItem.appendChild(title);
+            
+            // 6. Masukkan item yang sudah jadi ke dalam grid utama
+            gameGrid.appendChild(gridItem);
+        }
+    </script>
+    </body>
+</html>
+
