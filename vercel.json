@@ -2,7 +2,7 @@
   "root": "public",
   "headers": [
     {
-      "source": "/assets/(.*)",
+      "source": "/tetris/(.*)",
       "headers": [
         {
           "key": "Cache-Control",
