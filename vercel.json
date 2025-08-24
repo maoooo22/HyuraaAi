@@ -1,21 +1,11 @@
 {
-  // 1. Menentukan Folder Utama (Paling Penting)
   "root": "public",
-
-  // 2. Aturan untuk URL Cantik (Clean URL)
   "rewrites": [
     {
       "source": "/Tetris",
       "destination": "/Tetris/tetris.html"
     }
-    // Nanti kalau ada game baru, tinggal tambahkan di sini
-    // {
-    //   "source": "/Sudoku",
-    //   "destination": "/Sudoku/sudoku.html"
-    // }
   ],
-
-  // 3. Aturan Optimasi Cache (Biar Website Cepat)
   "headers": [
     {
       "source": "/assets/(.*)",
